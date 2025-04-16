@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formula Parfum Blend</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: #f5f3f0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 0;
+            background: #6d5d4b;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .blend-generator {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .blend-list {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .blend-details {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .blend-item {
+            padding: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .blend-item:hover {
+            background: #f8f8f8;
+            border-left-color: #6d5d4b;
+        }
+
+        .note-category {
+            color: #6d5d4b;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        button {
+            background: #6d5d4b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin: 10px 0;
+        }
+
+        button:hover {
+            background: #5d4d3b;
+        }
+
+        .active-blend {
+            background: #f8f8f8;
+            border-left-color: #6d5d4b;
+        }
+
+        @media (max-width: 768px) {
+            .blend-generator {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Formula Parfum Blend</h1>
+        <p>Explore unique perfume combinations</p>
+    </header>
+
+    <div class="container">
+        <button onclick="generateRandomBlend()">Generate Random Blend</button>
+        
+        <div class="blend-generator">
+            <div class="blend-list" id="blendList"></div>
+            <div class="blend-details" id="blendDetails"></div>
+        </div>
+    </div>
+
+    <script>
+        const blends = [
+            {
+                name: "Citrus Spice Fusion",
+                top: ["Bergamot", "Lemon Zest"],
+                middle: ["Cardamom", "Pink Pepper"],
+                base: ["Cedarwood", "Vetiver"],
+                description: "Vibrant citrus meets warm spices, grounded by earthy woods"
+            },
+            // Add other blends here following the same structure
+            {
+                name: "Floral Gourmand Delight",
+                top: ["Blackcurrant"],
+                middle: ["Rose", "Jasmine"],
+                base: ["Vanilla", "Caramel"],
+                description: "Romantic florals meet creamy caramel"
+            }
+            // Add remaining 8 blends...
+        ];
+
+        function renderBlendList() {
+            const blendList = document.getElementById('blendList');
+            blendList.innerHTML = blends.map((blend, index) => `
+                <div class="blend-item" onclick="showBlendDetails(${index})">
+                    <h3>${blend.name}</h3>
+                    <p>${blend.description}</p>
+                </div>
+            `).join('');
+        }
+
+        function showBlendDetails(index) {
+            const blend = blends[index];
+            const blendDetails = document.getElementById('blendDetails');
+            blendDetails.innerHTML = `
+                <h2>${blend.name}</h2>
+                <p class="description">${blend.description}</p>
+                <div class="note-category">Top Notes:</div>
+                <p>${blend.top.join(', ')}</p>
+                <div class="note-category">Middle Notes:</div>
+                <p>${blend.middle.join(', ')}</p>
+                <div class="note-category">Base Notes:</div>
+                <p>${blend.base.join(', ')}</p>
+            `;
+
+            // Update active state
+            document.querySelectorAll('.blend-item').forEach(item => 
+                item.classList.remove('active-blend'));
+            document.querySelectorAll('.blend-item')[index].classList.add('active-blend');
+        }
+
+        function generateRandomBlend() {
+            const randomIndex = Math.floor(Math.random() * blends.length);
+            showBlendDetails(randomIndex);
+        }
+
+        // Initial render
+        renderBlendList();
+        showBlendDetails(0);
+    </script>
+</body>
+</html>
